@@ -21,6 +21,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'tveskag/nvim-blame-line'
 
 " Functionalities
 Plug 'tpope/vim-fugitive'
@@ -55,6 +56,7 @@ Plug 'junegunn/vim-journal'
 
 call plug#end()
 
+
 """ Main Configurations
 filetype plugin indent on
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
@@ -84,6 +86,9 @@ autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
 " Markdown and Journal
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+" Git Line blame
+autocmd BufEnter * EnableBlameLine
 
 """ Coloring
 
@@ -139,6 +144,8 @@ let g:indentLine_char = '▏'
 let g:indentLine_defaultGroup = 'NonText'
 " Disable indentLine from concealing json and markdown syntax (e.g. ```)
 let g:vim_json_syntax_conceal = 0
+let g:vim_json_conceal=0
+let g:markdown_syntax_conceal=0
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 
@@ -147,6 +154,11 @@ let g:cursorhold_updatetime = 100
 
 " context.vim
 let g:context_nvim_no_redraw = 1
+
+" global status line, mvim only
+if has("nvim")
+  set laststatus=3
+endif
 
 " Neovim :Terminal
 tmap <Esc> <C-\><C-n>
@@ -162,8 +174,8 @@ let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
 """ Core plugin configuration (lua)
 lua << EOF
 servers = {
-    'pyright',
-    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
+    --'pyright',
+    'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
 }
 require('treesitter-config')
 require('nvim-cmp-config')
